@@ -30,7 +30,23 @@ export default function Features() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {/* Stats */}
+          <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl mx-auto">
+            <div className="text-center">
+              <div className="text-3xl font-bold text-funlearn6">10K+</div>
+              <div className="text-gray-600">Active Students</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-funlearn6">95%</div>
+              <div className="text-gray-600">Better Retention</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-funlearn6">24/7</div>
+              <div className="text-gray-600">Learning Support</div>
+            </div>
+          </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-20">
           {features.map((feature, index) => (
             <div 
               key={index}
