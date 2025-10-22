@@ -18,7 +18,7 @@ export default function CTA() {
             Get Started Free
           </Link>
           <Link 
-            href="#features"
+            href="/signup"
             className="border-2 border-funlearn6 text-funlearn6 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-funlearn2 transition-colors"
           >
             Learn More
