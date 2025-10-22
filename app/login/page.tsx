@@ -47,29 +47,29 @@ export default function Login() {
 
     setIsLoading(true);
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/auth/login`, {
+      const response = await fetch('http://localhost:5000/api/auth/login', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
-        });
+      });
 
-        const data = await response.json();
+      const data = await response.json();
 
-        if (response.ok) {
+      if (response.ok) {
         // Store token and redirect to dashboard
         localStorage.setItem('token', data.token);
         window.location.href = '/dashboard';
-        } else {
+      } else {
         setErrors({ submit: data.message || 'Invalid credentials' });
-        }
+      }
     } catch (error) {
-        setErrors({ submit: 'Network error. Please try again.' });
+      setErrors({ submit: 'Network error. Please try again.' });
     } finally {
-        setIsLoading(false);
+      setIsLoading(false);
     }
-    };
+  };
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);

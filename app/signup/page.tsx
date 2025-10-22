@@ -76,28 +76,28 @@ export default function SignUp() {
 
     setIsLoading(true);
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/auth/register`, {
+      const response = await fetch('http://localhost:5000/api/auth/register', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
-        });
+      });
 
-        const data = await response.json();
+      const data = await response.json();
 
-        if (response.ok) {
-       
+      if (response.ok) {
+        
         window.location.href = '/login?message=Registration successful. Please login.';
-        } else {
+      } else {
         setErrors({ submit: data.message || 'Registration failed' });
-        }
+      }
     } catch (error) {
-        setErrors({ submit: 'Network error. Please try again.' });
+      setErrors({ submit: 'Network error. Please try again.' });
     } finally {
-        setIsLoading(false);
+      setIsLoading(false);
     }
-    };
+  };
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
