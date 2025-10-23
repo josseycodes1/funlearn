@@ -1,7 +1,7 @@
-
+// app/dashboard/page.tsx
 'use client';
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import DashboardSidebar from '@/components/Dashboard/DashboardSidebar';
 import DashboardHeader from '@/components/Dashboard/DashboardHeader';
 import ChatBot from '@/components/Dashboard/ChatBot';
@@ -11,18 +11,21 @@ import Profile from '@/components/Dashboard/Profile';
 import Settings from '@/components/Dashboard/Settings';
 import Leaderboard from '@/components/Dashboard/Leaderboard';
 import DashboardOverview from '@/components/Dashboard/DashboardOverview';
-import { useSearchParams } from 'next/navigation';
-
-
-const searchParams = useSearchParams();
-const initialTab = searchParams.get('tab') || 'overview';
-
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState('overview');
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [user, setUser] = useState(null);
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    // Get initial tab from URL parameters
+    const tabFromUrl = searchParams.get('tab');
+    if (tabFromUrl) {
+      setActiveTab(tabFromUrl);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     // Check if user is authenticated
