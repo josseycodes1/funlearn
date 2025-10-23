@@ -40,36 +40,51 @@ export default function Login() {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!validateForm()) return;
+  // app/login/page.tsx - Update the handleSubmit function
+const handleSubmit = async (e: React.FormEvent) => {
+      e.preventDefault();
+      
+      if (!validateForm()) return;
 
-    setIsLoading(true);
-    try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/auth/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+      setIsLoading(true);
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/auth/login`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        });
 
-      const data = await response.json();
+        const data = await response.json();
 
-      if (response.ok) {
-        // Store token and redirect to dashboard
-        localStorage.setItem('token', data.token);
-        window.location.href = '/dashboard';
-      } else {
-        setErrors({ submit: data.message || 'Invalid credentials' });
+        if (response.ok) {
+          // Store token AND user data from the login response
+          localStorage.setItem('token', data.token);
+          
+          // Store user data if available in the response
+          if (data.data && data.data.user) {
+            localStorage.setItem('user', JSON.stringify(data.data.user));
+          } else {
+            // If user data is not in the expected format, create a basic user object
+            const basicUser = {
+              userName: formData.email.split('@')[0], // Use email prefix as username
+              email: formData.email
+            };
+            localStorage.setItem('user', JSON.stringify(basicUser));
+          }
+          
+          // Redirect to dashboard
+          window.location.href = '/dashboard';
+        } else {
+          setErrors({ submit: data.message || 'Invalid credentials' });
+        }
+      } catch (error) {
+        setErrors({ submit: 'Network error. Please try again.' });
+      } finally {
+        setIsLoading(false);
       }
-    } catch (error) {
-      setErrors({ submit: 'Network error. Please try again.' });
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    };
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);

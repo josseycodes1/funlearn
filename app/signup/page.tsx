@@ -69,7 +69,8 @@ export default function SignUp() {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // app/signup/page.tsx - Update the handleSubmit function
+const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!validateForm()) return;
@@ -87,7 +88,14 @@ export default function SignUp() {
       const data = await response.json();
 
       if (response.ok) {
+        // Store basic user data after successful registration
+        const basicUser = {
+          userName: formData.userName,
+          email: formData.email
+        };
+        localStorage.setItem('user', JSON.stringify(basicUser));
         
+        // Redirect to login with success message
         window.location.href = '/login?message=Registration successful. Please login.';
       } else {
         setErrors({ submit: data.message || 'Registration failed' });
