@@ -1,6 +1,6 @@
 // app/dashboard/page.tsx
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import DashboardSidebar from '@/components/Dashboard/DashboardSidebar';
 import DashboardHeader from '@/components/Dashboard/DashboardHeader';
@@ -12,7 +12,8 @@ import Settings from '@/components/Dashboard/Settings';
 import Leaderboard from '@/components/Dashboard/Leaderboard';
 import DashboardOverview from '@/components/Dashboard/DashboardOverview';
 
-export default function Dashboard() {
+// Separate component that uses useSearchParams
+function DashboardContent() {
   const [activeTab, setActiveTab] = useState('overview');
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [user, setUser] = useState(null);
@@ -116,5 +117,18 @@ export default function Dashboard() {
         </main>
       </div>
     </div>
+  );
+}
+
+// Main component with Suspense boundary
+export default function Dashboard() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-funlearn1">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-funlearn6"></div>
+      </div>
+    }>
+      <DashboardContent />
+    </Suspense>
   );
 }
